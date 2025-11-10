@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Support\Stubs;
+
+use Illuminate\Support\Facades\File;
+
+class StubHelper
+{
+    /**
+     * Populate a stub file with replacements.
+     */
+    public static function populate(string $stubPath, array $replacements): string
+    {
+        $stub = File::get($stubPath);
+
+        foreach ($replacements as $key => $value) {
+            $stub = str_replace("{{ {$key} }}", $value, $stub);
+        }
+
+        return $stub;
+    }
+
+    /**
+     * Get the stub path from the base stubs directory.
+     */
+    public static function getStubPath(string $stubName): string
+    {
+        return base_path("stubs/{$stubName}");
+    }
+
+    /**
+     * Check if a module exists.
+     */
+    public static function moduleExists(string $moduleName): bool
+    {
+        return File::exists(base_path("modules/{$moduleName}"));
+    }
+
+    /**
+     * Get all available modules.
+     */
+    public static function getAvailableModules(): array
+    {
+        $modulesPath = base_path('modules');
+
+        if (!File::exists($modulesPath)) {
+            return [];
+        }
+
+        return collect(File::directories($modulesPath))
+            ->map(fn($path) => basename($path))
+            ->sort()
+            ->values()
+            ->toArray();
+    }
+
+    /**
+     * Get the module path.
+     */
+    public static function getModulePath(string $moduleName): string
+    {
+        return base_path("modules/{$moduleName}");
+    }
+}
