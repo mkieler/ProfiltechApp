@@ -16,10 +16,10 @@ class MakeModuleCommand extends Command
     public function handle(): int
     {
         $moduleName = $this->argument('name');
-        $modulePath = base_path("modules/{$moduleName}");
+        $modulePath = base_path('modules/' . $moduleName);
 
         if (File::exists($modulePath)) {
-            $this->error("Module {$moduleName} already exists!");
+            $this->error(sprintf('Module %s already exists!', $moduleName));
 
             return self::FAILURE;
         }
@@ -38,19 +38,19 @@ class MakeModuleCommand extends Command
         ];
 
         foreach ($directories as $directory) {
-            File::makeDirectory("{$modulePath}/{$directory}", 0755, true);
+            File::makeDirectory(sprintf('%s/%s', $modulePath, $directory), 0755, true);
         }
 
         // Create module service provider
         $providerContent = $this->getProviderStub($moduleName);
-        File::put("{$modulePath}/Providers/{$moduleName}ServiceProvider.php", $providerContent);
+        File::put(sprintf('%s/Providers/%sServiceProvider.php', $modulePath, $moduleName), $providerContent);
 
         // Create routes file
         $routesContent = $this->getRoutesStub($moduleName);
-        File::put("{$modulePath}/Routes/web.php", $routesContent);
+        File::put($modulePath . '/Routes/web.php', $routesContent);
 
-        $this->info("Module {$moduleName} created successfully!");
-        $this->info("Don't forget to register Modules\\{$moduleName}\\Providers\\{$moduleName}ServiceProvider::class in bootstrap/providers.php");
+        $this->info(sprintf('Module %s created successfully!', $moduleName));
+        $this->info(sprintf("Don't forget to register Modules\\%s\\Providers\\%sServiceProvider::class in bootstrap/providers.php", $moduleName, $moduleName));
 
         return self::SUCCESS;
     }
@@ -60,8 +60,8 @@ class MakeModuleCommand extends Command
         return $this->populateStub(
             base_path('stubs/module.provider.stub'),
             [
-                'namespace' => "Modules\\{$moduleName}\\Providers",
-                'class' => "{$moduleName}ServiceProvider",
+                'namespace' => sprintf('Modules\%s\Providers', $moduleName),
+                'class' => $moduleName . 'ServiceProvider',
             ]
         );
     }
@@ -81,7 +81,7 @@ class MakeModuleCommand extends Command
         $stub = File::get($stubPath);
 
         foreach ($replacements as $key => $value) {
-            $stub = str_replace("{{ {$key} }}", $value, $stub);
+            $stub = str_replace(sprintf('{{ %s }}', $key), $value, $stub);
         }
 
         return $stub;

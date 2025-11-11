@@ -15,18 +15,16 @@ trait InteractsWithModules
     {
         $modules = StubHelper::getAvailableModules();
 
-        if (empty($modules)) {
+        if ($modules === []) {
             $this->error('No modules found!');
             $this->info('Run: php artisan make:module <name>');
 
             return null;
         }
 
-        $moduleName = $this->choice(
+        return $this->choice(
             'Which module should this belong to?',
             $modules
         );
-
-        return $moduleName;
     }
 }

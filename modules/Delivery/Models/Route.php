@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\Delivery\Models;
 
+use Modules\Delivery\Database\Factories\RouteFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Delivery\Models\traits\InteractsWithOpenRoute;
 
 class Route extends Model
 {
-    use HasFactory, InteractsWithOpenRoute;
-
+    use HasFactory;
+    use InteractsWithOpenRoute;
     protected $fillable = [];
 
     protected $hidden = [];
@@ -23,7 +24,7 @@ class Route extends Model
 
     protected static function newFactory()
     {
-        return \Modules\Delivery\Database\Factories\RouteFactory::new();
+        return RouteFactory::new();
     }
 
     public function totalTime()

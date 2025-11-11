@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use App\Console\Concerns\InteractsWithModules;
 use App\Support\Stubs\StubHelper;
 use Illuminate\Console\Command;
@@ -32,12 +33,12 @@ class ModuleMakeMigrationCommand extends Command
         $modulePath = StubHelper::getModulePath($moduleName);
 
         // Generate timestamp for migration
-        $timestamp = date('Y_m_d_His');
-        $fileName = "{$timestamp}_{$migrationName}.php";
-        $migrationPath = "{$modulePath}/Database/Migrations/{$fileName}";
+        $timestamp = Carbon::now()->format('Y_m_d_His');
+        $fileName = sprintf('%s_%s.php', $timestamp, $migrationName);
+        $migrationPath = sprintf('%s/Database/Migrations/%s', $modulePath, $fileName);
 
         if (File::exists($migrationPath)) {
-            $this->error("Migration {$migrationName} already exists in module {$moduleName}!");
+            $this->error(sprintf('Migration %s already exists in module %s!', $migrationName, $moduleName));
 
             return self::FAILURE;
         }
@@ -45,7 +46,7 @@ class ModuleMakeMigrationCommand extends Command
         $content = $this->getMigrationStub($migrationName);
         File::put($migrationPath, $content);
 
-        $this->components->info("Migration [{$migrationPath}] created successfully.");
+        $this->components->info(sprintf('Migration [%s] created successfully.', $migrationPath));
 
         return self::SUCCESS;
     }

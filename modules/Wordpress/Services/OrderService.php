@@ -15,7 +15,7 @@ class OrderService
      */
     public function getOrders(
         ?array $filters = null,
-        ?SearchFilter $search = null,
+        ?SearchFilter $searchFilter = null,
         int $perPage = 20,
         bool $withLines = true,
         bool $unprocessedOnly = true

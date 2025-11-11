@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Delivery\Models;
 
+use Modules\Delivery\Database\Factories\StopFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +24,7 @@ class Stop extends Model
 
     protected static function newFactory()
     {
-        return \Modules\Delivery\Database\Factories\StopFactory::new();
+        return StopFactory::new();
     }
 
     public function order()

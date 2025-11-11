@@ -13,7 +13,7 @@ class RouteController
         public DeliveryService $deliveryService
     ) {}
 
-    public function addStopToRoute(AddStopToRouteRequest $addStopToRouteRequest)
+    public function addStopToRoute(AddStopToRouteRequest $addStopToRouteRequest): void
     {
         $this->deliveryService->addStopToRoute(
             $addStopToRouteRequest->route_id,

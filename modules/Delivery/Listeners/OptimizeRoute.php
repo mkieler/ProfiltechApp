@@ -17,10 +17,10 @@ class OptimizeRoute
     /**
      * Handle the event.
      */
-    public function handle(RouteUpdatedEvent $event): void
+    public function handle(RouteUpdatedEvent $routeUpdatedEvent): void
     {
         $this->deliveryService->optimizeStopsOnRoute(
-            $event->route,
+            $routeUpdatedEvent->route,
             new ORSVehicle(1, 'driving-hgv')
         );
     }

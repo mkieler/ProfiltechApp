@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Order\Models;
 
+use Modules\Order\Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Wordpress\Models\WoocommerceOrder;
@@ -23,7 +24,7 @@ class Order extends Model
 
     protected static function newFactory()
     {
-        return \Modules\Order\Database\Factories\OrderFactory::new();
+        return OrderFactory::new();
     }
 
     public function wcOrder()

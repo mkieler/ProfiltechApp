@@ -1,0 +1,16 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+
+parameters:
+    level: 9
+    paths:
+        - app
+        - modules
+        - tests
+    excludePaths:
+        - app/database/migrations
+        - vendor
+    checkMissingCallableSignature: true
+    reportUnmatchedIgnoredErrors: true
+    treatPhpDocTypesAsCertain: false

@@ -28,10 +28,10 @@ class ModuleMakeModelCommand extends Command
         }
 
         $modulePath = StubHelper::getModulePath($moduleName);
-        $modelPath = "{$modulePath}/Models/{$modelName}.php";
+        $modelPath = sprintf('%s/Models/%s.php', $modulePath, $modelName);
 
         if (File::exists($modelPath)) {
-            $this->error("Model {$modelName} already exists in module {$moduleName}!");
+            $this->error(sprintf('Model %s already exists in module %s!', $modelName, $moduleName));
 
             return self::FAILURE;
         }
@@ -39,12 +39,12 @@ class ModuleMakeModelCommand extends Command
         $content = $this->getModelStub($moduleName, $modelName);
         File::put($modelPath, $content);
 
-        $this->components->info("Model [{$modelPath}] created successfully.");
+        $this->components->info(sprintf('Model [%s] created successfully.', $modelPath));
 
         // Create migration if requested
         if ($this->option('migration')) {
             $tableName = Str::snake(Str::pluralStudly($modelName));
-            $migrationName = "create_{$tableName}_table";
+            $migrationName = sprintf('create_%s_table', $tableName);
 
             $this->newLine();
 
@@ -67,7 +67,7 @@ class ModuleMakeModelCommand extends Command
         return StubHelper::populate(
             StubHelper::getStubPath('model.stub'),
             [
-                'namespace' => "Modules\\{$moduleName}\\Models",
+                'namespace' => sprintf('Modules\%s\Models', $moduleName),
                 'class' => $modelName,
             ]
         );

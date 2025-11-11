@@ -27,10 +27,10 @@ class ModuleMakeControllerCommand extends Command
         }
 
         $modulePath = StubHelper::getModulePath($moduleName);
-        $controllerPath = "{$modulePath}/Http/Controllers/{$controllerName}.php";
+        $controllerPath = sprintf('%s/Http/Controllers/%s.php', $modulePath, $controllerName);
 
         if (File::exists($controllerPath)) {
-            $this->error("Controller {$controllerName} already exists in module {$moduleName}!");
+            $this->error(sprintf('Controller %s already exists in module %s!', $controllerName, $moduleName));
 
             return self::FAILURE;
         }
@@ -41,7 +41,7 @@ class ModuleMakeControllerCommand extends Command
 
         File::put($controllerPath, $content);
 
-        $this->components->info("Controller [{$controllerPath}] created successfully.");
+        $this->components->info(sprintf('Controller [%s] created successfully.', $controllerPath));
 
         return self::SUCCESS;
     }
@@ -51,7 +51,7 @@ class ModuleMakeControllerCommand extends Command
         return StubHelper::populate(
             StubHelper::getStubPath('controller.stub'),
             [
-                'namespace' => "Modules\\{$moduleName}\\Http\\Controllers",
+                'namespace' => sprintf('Modules\%s\Http\Controllers', $moduleName),
                 'class' => $controllerName,
             ]
         );
@@ -62,7 +62,7 @@ class ModuleMakeControllerCommand extends Command
         return StubHelper::populate(
             StubHelper::getStubPath('controller.resource.stub'),
             [
-                'namespace' => "Modules\\{$moduleName}\\Http\\Controllers",
+                'namespace' => sprintf('Modules\%s\Http\Controllers', $moduleName),
                 'class' => $controllerName,
             ]
         );

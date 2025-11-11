@@ -16,7 +16,7 @@ class ORSClient
      * @param  Collection<ORSJob>  $orsJobs
      * @return Collection<ORSStep>
      */
-    public static function optimizeRoute(Collection $orsJobs, ORSVehicle $vehicle): Collection
+    public static function optimizeRoute(Collection $orsJobs, ORSVehicle $orsVehicle): Collection
     {
         $steps = Http::withHeaders([
             'Authorization' => env('OPENROUTESERVICE_API_KEY'),
@@ -24,10 +24,10 @@ class ORSClient
         ])->post('https://api.openrouteservice.org/optimization', [
             'jobs' => $orsJobs,
             'vehicles' => [
-                $vehicle,
+                $orsVehicle,
             ],
         ])->collect('routes.0.steps');
 
-        return $steps->map(fn ($step) => ORSStep::from($step));
+        return $steps->map(fn ($step): ORSStep => ORSStep::from($step));
     }
 }

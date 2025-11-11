@@ -27,10 +27,10 @@ class ModuleMakeRequestCommand extends Command
         }
 
         $modulePath = StubHelper::getModulePath($moduleName);
-        $requestPath = "{$modulePath}/Http/Requests/{$requestName}.php";
+        $requestPath = sprintf('%s/Http/Requests/%s.php', $modulePath, $requestName);
 
         if (File::exists($requestPath)) {
-            $this->error("Request {$requestName} already exists in module {$moduleName}!");
+            $this->error(sprintf('Request %s already exists in module %s!', $requestName, $moduleName));
 
             return self::FAILURE;
         }
@@ -38,7 +38,7 @@ class ModuleMakeRequestCommand extends Command
         $content = $this->getRequestStub($moduleName, $requestName);
         File::put($requestPath, $content);
 
-        $this->components->info("Request [{$requestPath}] created successfully.");
+        $this->components->info(sprintf('Request [%s] created successfully.', $requestPath));
 
         return self::SUCCESS;
     }
@@ -48,7 +48,7 @@ class ModuleMakeRequestCommand extends Command
         return StubHelper::populate(
             StubHelper::getStubPath('request.stub'),
             [
-                'namespace' => "Modules\\{$moduleName}\\Http\\Requests",
+                'namespace' => sprintf('Modules\%s\Http\Requests', $moduleName),
                 'class' => $requestName,
             ]
         );

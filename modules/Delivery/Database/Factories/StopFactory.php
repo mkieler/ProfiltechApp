@@ -24,21 +24,21 @@ class StopFactory extends Factory
 
     public function forRoute(Route $route): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'route_id' => $route->id,
         ]);
     }
 
     public function forOrder(Order $order): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'order_id' => $order->id,
         ]);
     }
 
     public function withSequence(int $sequence): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'sequence' => $sequence,
         ]);
     }

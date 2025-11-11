@@ -29,14 +29,14 @@ class DatabaseSeeder extends Seeder
         ])->flatten();
 
         // For each route, create orders and stops
-        $routes->each(function (Route $route, $index) {
+        $routes->each(function (Route $route, $index): void {
             // Skip cancelled routes
             if ($route->status === 'CANCELLED') {
                 return;
             }
 
             // Create 3-8 stops per route
-            $stopCount = rand(3, 8);
+            $stopCount = random_int(3, 8);
 
             for ($i = 1; $i <= $stopCount; $i++) {
                 // Create an order for this stop

@@ -6,20 +6,14 @@ namespace Modules\Delivery\External\OpenRouteService\Data;
 
 class ORSJob
 {
-    public int $id;
-
     public array $location;
 
-    public int $service;
-
     public function __construct(
-        int $id,
+        public int $id,
         float $latitude,
         float $longitude,
-        int $service
+        public int $service
     ) {
-        $this->id = $id;
         $this->location = [$longitude, $latitude];
-        $this->service = $service;
     }
 }

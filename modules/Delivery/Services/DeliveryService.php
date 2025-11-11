@@ -13,7 +13,7 @@ use Modules\Delivery\Models\Route;
 
 class DeliveryService
 {
-    public function scheduleDelivery(array $details)
+    public function scheduleDelivery(array $details): void
     {
         // Logic to schedule a delivery
     }
@@ -26,7 +26,7 @@ class DeliveryService
         )->paginate($perPage);
     }
 
-    public function addStopToRoute(int $routeId, int $orderId)
+    public function addStopToRoute(int $routeId, int $orderId): void
     {
         $route = Route::find($routeId);
         $lastSequence = $route->stops()->max('sequence') ?? 0;
@@ -40,14 +40,15 @@ class DeliveryService
     /**
      * @param  Collection<Route>  $stops
      */
-    public function optimizeStopsOnRoute(Route $route, ORSVehicle $vehicle)
+    public function optimizeStopsOnRoute(Route $route, ORSVehicle $orsVehicle): void
     {
         $orsJobs = $route->getStopsAsORSJobs();
-        $orsRouteSteps = ORSClient::optimizeRoute($orsJobs, $vehicle);
+        $orsRouteSteps = ORSClient::optimizeRoute($orsJobs, $orsVehicle);
         foreach ($orsRouteSteps as $index => $step) {
             if (! $step->id) {
                 continue;
             }
+
             $stop = $route->stops->firstWhere('id', $step->id);
             $stop->update(['sequence' => $index + 1]);
         }

@@ -12,12 +12,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('routes', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('origin');
-            $table->string('status');
-            $table->timestamps();
+        Schema::create('routes', function (Blueprint $blueprint): void {
+            $blueprint->id();
+            $blueprint->string('name');
+            $blueprint->string('origin');
+            $blueprint->string('status');
+            $blueprint->timestamps();
         });
     }
 

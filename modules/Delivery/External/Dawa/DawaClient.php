@@ -25,9 +25,9 @@ class DawaClient
         int $postalCode
     ): ?DawaAddressResponse {
         return Cache::remember(
-            "dawa:{$address}:{$postalCode}:addressData",
+            sprintf('dawa:%s:%d:addressData', $address, $postalCode),
             86400,
-            function () use ($address, $postalCode) {
+            function () use ($address, $postalCode): ?DawaAddressResponse {
                 $data = Http::get('https://api.dataforsyningen.dk/adresser', [
                     'q' => $address,
                     'postnr' => $postalCode,

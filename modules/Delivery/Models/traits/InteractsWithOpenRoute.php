@@ -10,13 +10,11 @@ trait InteractsWithOpenRoute
 {
     public function getStopsAsORSJobs()
     {
-        return $this->stops->map(function ($stop) {
-            return new ORSJob(
-                id: $stop->id,
-                latitude: $stop->latitude,
-                longitude: $stop->longitude,
-                service: $stop->service_time
-            );
-        });
+        return $this->stops->map(fn($stop): ORSJob => new ORSJob(
+            id: $stop->id,
+            latitude: $stop->latitude,
+            longitude: $stop->longitude,
+            service: $stop->service_time
+        ));
     }
 }

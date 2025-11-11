@@ -16,7 +16,7 @@ class StubHelper
         $stub = File::get($stubPath);
 
         foreach ($replacements as $key => $value) {
-            $stub = str_replace("{{ {$key} }}", $value, $stub);
+            $stub = str_replace(sprintf('{{ %s }}', $key), $value, $stub);
         }
 
         return $stub;
@@ -27,7 +27,7 @@ class StubHelper
      */
     public static function getStubPath(string $stubName): string
     {
-        return base_path("stubs/{$stubName}");
+        return base_path('stubs/' . $stubName);
     }
 
     /**
@@ -35,7 +35,7 @@ class StubHelper
      */
     public static function moduleExists(string $moduleName): bool
     {
-        return File::exists(base_path("modules/{$moduleName}"));
+        return File::exists(base_path('modules/' . $moduleName));
     }
 
     /**
@@ -50,7 +50,7 @@ class StubHelper
         }
 
         return collect(File::directories($modulesPath))
-            ->map(fn ($path) => basename($path))
+            ->map(fn ($path): string => basename((string) $path))
             ->sort()
             ->values()
             ->toArray();
@@ -61,6 +61,6 @@ class StubHelper
      */
     public static function getModulePath(string $moduleName): string
     {
-        return base_path("modules/{$moduleName}");
+        return base_path('modules/' . $moduleName);
     }
 }

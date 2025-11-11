@@ -12,10 +12,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('wc_order_id');
-            $table->timestamps();
+        Schema::create('orders', function (Blueprint $blueprint): void {
+            $blueprint->id();
+            $blueprint->unsignedBigInteger('wc_order_id');
+            $blueprint->timestamps();
         });
     }
 

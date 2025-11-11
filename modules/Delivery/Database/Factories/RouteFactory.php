@@ -34,28 +34,28 @@ class RouteFactory extends Factory
 
     public function draft(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'status' => DeliveryStatus::DRAFT->name,
         ]);
     }
 
     public function processing(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'status' => DeliveryStatus::PROCESSING->name,
         ]);
     }
 
     public function completed(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'status' => DeliveryStatus::COMPLETED->name,
         ]);
     }
 
     public function cancelled(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'status' => DeliveryStatus::CANCELLED->name,
         ]);
     }

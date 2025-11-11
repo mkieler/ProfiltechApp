@@ -11,8 +11,9 @@ use Modules\Delivery\Models\Route;
 
 class RouteUpdatedEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
-
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
     /**
      * Create a new event instance.
      */
