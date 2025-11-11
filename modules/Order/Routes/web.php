@@ -1,5 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use Modules\Order\Http\Controllers\OrderController;
 
-// Order module routes
+Route::controller(OrderController::class)
+    ->prefix('/orders')
+    ->name('orders.')
+    ->group(function () {
+        Route::get('/', 'list')->name('list');
+        Route::get('/{id}', 'details')->name('details');
+    });

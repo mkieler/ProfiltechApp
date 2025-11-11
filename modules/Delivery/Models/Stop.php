@@ -12,7 +12,7 @@ class Stop extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['order_id', 'sequence', 'latitude', 'longitude'];
+    protected $fillable = ['order_id', 'sequence', 'status', 'service_time'];
 
     protected function casts(): array
     {
@@ -29,37 +29,13 @@ class Stop extends Model
         return $this->belongsTo(Order::class, 'order_id', 'id');
     }
 
-    protected function longitude(): Attribute
+    public function getLatitudeAttribute(): ?float
     {
-        return Attribute::make(
-            get: function ($value) {
-                if (!$value) {
-                    $value = DawaClient::getLongitude(
-                        $this->order->shipping->address_1,
-                        $this->order->shipping->postcode
-                    );
-                    $this->update(['longitude' => $value]);
-                }
-                return $value;
-            },
-            set: fn ($value) => $this->longitude = $value
-        );
+        return $this->order->latitude;
     }
 
-    protected function latitude(): Attribute
+    public function getLongitudeAttribute(): ?float
     {
-        return Attribute::make(
-            get: function ($value) {
-                if (!$value) {
-                    $value = DawaClient::getLatitude(
-                        $this->order->shipping->address_1,
-                        $this->order->shipping->postcode
-                    );
-                    $this->update(['latitude' => $value]);
-                }
-                return $value;
-            },
-            set: fn ($value) => $this->latitude = $value
-        );
+        return $this->order->longitude;
     }
 }

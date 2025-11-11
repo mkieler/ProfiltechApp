@@ -13,6 +13,12 @@ class RouteController
         public DeliveryService $deliveryService
     ) {}
 
+    public function list()
+    {
+        return $this->deliveryService->getRoutes();
+    }
+
+
     public function addStopToRoute(AddStopToRouteRequest $addStopToRouteRequest)
     {
         $this->deliveryService->addStopToRoute(

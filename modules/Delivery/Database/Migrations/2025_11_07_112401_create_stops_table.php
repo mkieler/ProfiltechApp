@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Delivery\Enums\DeliveryStopStatus;
 
 return new class extends Migration
 {
@@ -15,8 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Modules\Delivery\Models\Route::class);
             $table->foreignIdFor(Modules\Order\Models\Order::class);
-            $table->float('latitude')->nullable();
-            $table->float('longitude')->nullable();
+            $table->string('status')->default(DeliveryStopStatus::PENDING);
             $table->integer('sequence');
             $table->integer('service_time')->default(300);
             $table->timestamps();
