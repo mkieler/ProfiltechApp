@@ -9,13 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class WoocommerceAddress extends Model
 {
+    /** @use HasFactory<\Illuminate\Database\Eloquent\Factories\Factory<static>> */
     use HasFactory;
 
     protected $table = 'wc_order_addresses';
 
     protected $connection = 'wordpress';
 
-    protected $fillable = [];
+    protected $fillable = ['order_id', 'address_type', 'first_name', 'last_name', 'company', 'address_1', 'address_2', 'city', 'state', 'postcode', 'country', 'email', 'phone'];
 
     protected $hidden = [];
 
@@ -39,6 +40,6 @@ class WoocommerceAddress extends Model
             return $matches[1];
         }
 
-        return 1;
+        return '1';
     }
 }

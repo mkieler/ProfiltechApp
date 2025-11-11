@@ -13,6 +13,7 @@ class ExampleTest extends TestCase
      */
     public function test_that_true_is_true(): void
     {
-        $this->assertTrue(true);
+        $value = random_int(1, 10);
+        $this->assertTrue($value > 0);
     }
 }

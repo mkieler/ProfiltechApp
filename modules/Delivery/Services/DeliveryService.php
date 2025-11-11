@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Delivery\Services;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Modules\Delivery\Enums\DeliveryStatus;
 use Modules\Delivery\Events\RouteUpdatedEvent;
@@ -13,12 +14,18 @@ use Modules\Delivery\Models\Route;
 
 class DeliveryService
 {
+    /**
+     * @param array<string, mixed> $details
+     */
     public function scheduleDelivery(array $details): void
     {
         // Logic to schedule a delivery
     }
 
-    public function getRoutes(int $perPage = 20, bool $withCompleted = false)
+    /**
+     * @return LengthAwarePaginator<Route>
+     */
+    public function getRoutes(int $perPage = 20, bool $withCompleted = false): LengthAwarePaginator
     {
         return Route::when(
             ! $withCompleted,
@@ -29,7 +36,12 @@ class DeliveryService
     public function addStopToRoute(int $routeId, int $orderId): void
     {
         $route = Route::find($routeId);
-        $lastSequence = $route->stops()->max('sequence') ?? 0;
+
+        if ($route === null) {
+            return;
+        }
+
+        $lastSequence = (int) $route->stops()->max('sequence');
         $route->stops()->create([
             'order_id' => $orderId,
             'sequence' => $lastSequence + 1,
@@ -37,9 +49,6 @@ class DeliveryService
         RouteUpdatedEvent::dispatch($route);
     }
 
-    /**
-     * @param  Collection<Route>  $stops
-     */
     public function optimizeStopsOnRoute(Route $route, ORSVehicle $orsVehicle): void
     {
         $orsJobs = $route->getStopsAsORSJobs();
@@ -50,7 +59,10 @@ class DeliveryService
             }
 
             $stop = $route->stops->firstWhere('id', $step->id);
-            $stop->update(['sequence' => $index + 1]);
+
+            if ($stop !== null) {
+                $stop->update(['sequence' => $index + 1]);
+            }
         }
     }
 }

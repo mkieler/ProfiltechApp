@@ -76,6 +76,9 @@ class MakeModuleCommand extends Command
         );
     }
 
+    /**
+     * @param array<string, string> $replacements
+     */
     protected function populateStub(string $stubPath, array $replacements): string
     {
         $stub = File::get($stubPath);

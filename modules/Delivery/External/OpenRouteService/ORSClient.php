@@ -13,13 +13,15 @@ use Modules\Delivery\External\OpenRouteService\Data\ORSVehicle;
 class ORSClient
 {
     /**
-     * @param  Collection<ORSJob>  $orsJobs
-     * @return Collection<ORSStep>
+     * @param  Collection<int, ORSJob>  $orsJobs
+     * @return Collection<int, ORSStep>
      */
     public static function optimizeRoute(Collection $orsJobs, ORSVehicle $orsVehicle): Collection
     {
+        $apiKey = config('services.openrouteservice.api_key', '');
+
         $steps = Http::withHeaders([
-            'Authorization' => env('OPENROUTESERVICE_API_KEY'),
+            'Authorization' => $apiKey,
             'Content-Type' => 'application/json',
         ])->post('https://api.openrouteservice.org/optimization', [
             'jobs' => $orsJobs,

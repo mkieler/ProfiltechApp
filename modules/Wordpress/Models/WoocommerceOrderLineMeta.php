@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class WoocommerceOrderLineMeta extends Model
 {
+    /** @use HasFactory<\Illuminate\Database\Eloquent\Factories\Factory<static>> */
     use HasFactory;
 
     protected $table = 'woocommerce_order_itemmeta';

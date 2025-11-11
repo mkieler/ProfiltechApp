@@ -11,7 +11,7 @@ class ProductService
         // Logic to retrieve products from WordPress
     }
 
-    public function updatePriceByM2($productId, $pricePerM2): void
+    public function updatePriceByM2(int $productId, float $pricePerM2): void
     {
         // Logic to update product price based on square meters
     }

@@ -6,6 +6,7 @@ namespace Modules\Delivery\External\OpenRouteService\Data;
 
 class ORSJob
 {
+    /** @var array<int, float> */
     public array $location;
 
     public function __construct(

@@ -8,14 +8,19 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Order\Models\Order;
 use Modules\Wordpress\Models\WoocommerceOrder;
 
+/**
+ * @extends Factory<Order>
+ */
 class OrderFactory extends Factory
 {
     protected $model = Order::class;
 
     public function definition(): array
     {
+        $order = WoocommerceOrder::inRandomOrder()->first();
+
         return [
-            'wc_order_id' => WoocommerceOrder::inRandomOrder()->first()->id,
+            'wc_order_id' => $order !== null ? $order->id : 1,
         ];
     }
 }

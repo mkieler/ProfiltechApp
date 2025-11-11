@@ -49,9 +49,12 @@ class ModuleMakeModelCommand extends Command
             $this->newLine();
 
             // Get the migration command and set the module before running
-            $migrationCommand = $this->getApplication()->find('make:migration');
-            if (method_exists($migrationCommand, 'setModule')) {
-                $migrationCommand->setModule($moduleName);
+            $application = $this->getApplication();
+            if ($application !== null) {
+                $migrationCommand = $application->find('make:migration');
+                if (method_exists($migrationCommand, 'setModule')) {
+                    $migrationCommand->setModule($moduleName);
+                }
             }
 
             $this->call('make:migration', [

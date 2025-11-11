@@ -22,9 +22,11 @@ trait InteractsWithModules
             return null;
         }
 
-        return $this->choice(
+        $choice = $this->choice(
             'Which module should this belong to?',
             $modules
         );
+
+        return is_string($choice) ? $choice : null;
     }
 }

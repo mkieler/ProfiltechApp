@@ -6,9 +6,12 @@ namespace Modules\Wordpress\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class WoocommerceOrder extends Model
 {
+    /** @use HasFactory<\Illuminate\Database\Eloquent\Factories\Factory<static>> */
     use HasFactory;
 
     protected $table = 'wc_orders';
@@ -26,22 +29,34 @@ class WoocommerceOrder extends Model
         return [];
     }
 
-    public function lines()
+    /**
+     * @return HasMany<WoocommerceOrderLine, $this>
+     */
+    public function lines(): HasMany
     {
         return $this->hasMany(WoocommerceOrderLine::class, 'order_id', 'id');
     }
 
-    public function meta()
+    /**
+     * @return HasMany<WoocommerceOrderMeta, $this>
+     */
+    public function meta(): HasMany
     {
         return $this->hasMany(WoocommerceOrderMeta::class, 'order_id', 'id');
     }
 
-    public function shipping()
+    /**
+     * @return HasOne<WoocommerceAddress, $this>
+     */
+    public function shipping(): HasOne
     {
         return $this->hasOne(WoocommerceAddress::class, 'order_id', 'id')->where('address_type', 'shipping');
     }
 
-    public function billing()
+    /**
+     * @return HasOne<WoocommerceAddress, $this>
+     */
+    public function billing(): HasOne
     {
         return $this->hasOne(WoocommerceAddress::class, 'order_id', 'id')->where('address_type', 'billing');
     }

@@ -10,6 +10,8 @@ class StubHelper
 {
     /**
      * Populate a stub file with replacements.
+     *
+     * @param array<string, string> $replacements
      */
     public static function populate(string $stubPath, array $replacements): string
     {
@@ -40,6 +42,8 @@ class StubHelper
 
     /**
      * Get all available modules.
+     *
+     * @return array<int, string>
      */
     public static function getAvailableModules(): array
     {
@@ -49,6 +53,7 @@ class StubHelper
             return [];
         }
 
+        /** @var array<int, string> */
         return collect(File::directories($modulesPath))
             ->map(fn ($path): string => basename((string) $path))
             ->sort()

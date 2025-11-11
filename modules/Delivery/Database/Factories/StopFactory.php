@@ -9,6 +9,9 @@ use Modules\Delivery\Models\Route;
 use Modules\Delivery\Models\Stop;
 use Modules\Order\Models\Order;
 
+/**
+ * @extends Factory<Stop>
+ */
 class StopFactory extends Factory
 {
     protected $model = Stop::class;

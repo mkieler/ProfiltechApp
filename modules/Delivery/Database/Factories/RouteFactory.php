@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Delivery\Enums\DeliveryStatus;
 use Modules\Delivery\Models\Route;
 
+/**
+ * @extends Factory<Route>
+ */
 class RouteFactory extends Factory
 {
     protected $model = Route::class;
