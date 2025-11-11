@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -8,6 +10,7 @@ use Illuminate\Support\Facades\File;
 class MakeModuleCommand extends Command
 {
     protected $signature = 'make:module {name : The name of the module}';
+
     protected $description = 'Create a new module with standard DDD structure';
 
     public function handle(): int
@@ -17,6 +20,7 @@ class MakeModuleCommand extends Command
 
         if (File::exists($modulePath)) {
             $this->error("Module {$moduleName} already exists!");
+
             return self::FAILURE;
         }
 

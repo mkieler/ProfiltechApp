@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Delivery\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -33,13 +35,14 @@ class Stop extends Model
     {
         return Attribute::make(
             get: function ($value) {
-                if (!$value) {
+                if (! $value) {
                     $value = DawaClient::getLongitude(
                         $this->order->shipping->address_1,
                         $this->order->shipping->postcode
                     );
                     $this->update(['longitude' => $value]);
                 }
+
                 return $value;
             },
             set: fn ($value) => $this->longitude = $value
@@ -50,13 +53,14 @@ class Stop extends Model
     {
         return Attribute::make(
             get: function ($value) {
-                if (!$value) {
+                if (! $value) {
                     $value = DawaClient::getLatitude(
                         $this->order->shipping->address_1,
                         $this->order->shipping->postcode
                     );
                     $this->update(['latitude' => $value]);
                 }
+
                 return $value;
             },
             set: fn ($value) => $this->latitude = $value

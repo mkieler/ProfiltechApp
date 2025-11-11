@@ -1,15 +1,10 @@
 <?php
 
-namespace Modules\Delivery\External\OpenRouteService;
-use Modules\Delivery\External\OpenRouteService\Data\ORSStep;
-use Modules\Delivery\External\OpenRouteService\Data\ORSRoute;
+declare(strict_types=1);
 
-use Illuminate\Support\Collection;
+namespace Modules\Delivery\External\OpenRouteService;
 
 class Adapter
 {
-    public static function optimizeRouteResponseAdapter(array $response)
-    {
-
-    }
+    public static function optimizeRouteResponseAdapter(array $response) {}
 }

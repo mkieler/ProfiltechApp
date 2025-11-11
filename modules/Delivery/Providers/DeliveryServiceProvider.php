@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Delivery\Providers;
 
 use Illuminate\Support\Facades\Event;

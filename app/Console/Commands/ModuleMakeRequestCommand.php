@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Console\Concerns\InteractsWithModules;
@@ -12,6 +14,7 @@ class ModuleMakeRequestCommand extends Command
     use InteractsWithModules;
 
     protected $signature = 'make:request {name : The request name}';
+
     protected $description = 'Create a new form request within a module';
 
     public function handle(): int
@@ -19,7 +22,7 @@ class ModuleMakeRequestCommand extends Command
         $requestName = $this->argument('name');
         $moduleName = $this->askForModule();
 
-        if (!$moduleName) {
+        if (! $moduleName) {
             return self::FAILURE;
         }
 
@@ -28,6 +31,7 @@ class ModuleMakeRequestCommand extends Command
 
         if (File::exists($requestPath)) {
             $this->error("Request {$requestName} already exists in module {$moduleName}!");
+
             return self::FAILURE;
         }
 

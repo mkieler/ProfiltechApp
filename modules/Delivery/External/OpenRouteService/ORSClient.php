@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Delivery\External\OpenRouteService;
 
 use Illuminate\Support\Collection;
@@ -11,7 +13,7 @@ use Modules\Delivery\External\OpenRouteService\Data\ORSVehicle;
 class ORSClient
 {
     /**
-     * @param Collection<ORSJob> $orsJobs
+     * @param  Collection<ORSJob>  $orsJobs
      * @return Collection<ORSStep>
      */
     public static function optimizeRoute(Collection $orsJobs, ORSVehicle $vehicle): Collection
@@ -22,10 +24,10 @@ class ORSClient
         ])->post('https://api.openrouteservice.org/optimization', [
             'jobs' => $orsJobs,
             'vehicles' => [
-                $vehicle
+                $vehicle,
             ],
         ])->collect('routes.0.steps');
 
-        return $steps->map(fn($step) => ORSStep::from($step));
+        return $steps->map(fn ($step) => ORSStep::from($step));
     }
 }

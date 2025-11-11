@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Console\Concerns\InteractsWithModules;
@@ -13,6 +15,7 @@ class ModuleMakeModelCommand extends Command
     use InteractsWithModules;
 
     protected $signature = 'make:model {name : The model name} {--m|migration : Create a migration file}';
+
     protected $description = 'Create a new model within a module';
 
     public function handle(): int
@@ -20,7 +23,7 @@ class ModuleMakeModelCommand extends Command
         $modelName = $this->argument('name');
         $moduleName = $this->askForModule();
 
-        if (!$moduleName) {
+        if (! $moduleName) {
             return self::FAILURE;
         }
 
@@ -29,6 +32,7 @@ class ModuleMakeModelCommand extends Command
 
         if (File::exists($modelPath)) {
             $this->error("Model {$modelName} already exists in module {$moduleName}!");
+
             return self::FAILURE;
         }
 

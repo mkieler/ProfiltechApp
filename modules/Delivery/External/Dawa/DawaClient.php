@@ -1,19 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Delivery\External\Dawa;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Modules\Delivery\External\Dawa\Data\DawaAddressResponse;
 
 class DawaClient
 {
-    public static function getLongitude(string $address, int $postalCode): float {
+    public static function getLongitude(string $address, int $postalCode): float
+    {
         return (float) self::getAddressData($address, $postalCode)?->x;
     }
 
-    public static function getLatitude(string $address, int $postalCode): float {
+    public static function getLatitude(string $address, int $postalCode): float
+    {
         return (float) self::getAddressData($address, $postalCode)?->y;
     }
 
@@ -25,11 +28,11 @@ class DawaClient
             "dawa:{$address}:{$postalCode}:addressData",
             86400,
             function () use ($address, $postalCode) {
-                $data = Http::get("https://api.dataforsyningen.dk/adresser", [
+                $data = Http::get('https://api.dataforsyningen.dk/adresser', [
                     'q' => $address,
                     'postnr' => $postalCode,
                     'format' => 'json',
-                    'struktur' => 'mini'
+                    'struktur' => 'mini',
                 ])->json()[0];
 
                 return empty($data) ? null : DawaAddressResponse::from($data);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Delivery\Models\traits;
 
 use Modules\Delivery\External\OpenRouteService\Data\ORSJob;

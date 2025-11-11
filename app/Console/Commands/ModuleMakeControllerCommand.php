@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Console\Concerns\InteractsWithModules;
@@ -12,6 +14,7 @@ class ModuleMakeControllerCommand extends Command
     use InteractsWithModules;
 
     protected $signature = 'make:controller {name : The controller name} {--r|resource : Generate a resource controller}';
+
     protected $description = 'Create a new controller within a module';
 
     public function handle(): int
@@ -19,7 +22,7 @@ class ModuleMakeControllerCommand extends Command
         $controllerName = $this->argument('name');
         $moduleName = $this->askForModule();
 
-        if (!$moduleName) {
+        if (! $moduleName) {
             return self::FAILURE;
         }
 
@@ -28,6 +31,7 @@ class ModuleMakeControllerCommand extends Command
 
         if (File::exists($controllerPath)) {
             $this->error("Controller {$controllerName} already exists in module {$moduleName}!");
+
             return self::FAILURE;
         }
 

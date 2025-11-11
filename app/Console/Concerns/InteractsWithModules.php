@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Concerns;
 
 use App\Support\Stubs\StubHelper;
@@ -16,6 +18,7 @@ trait InteractsWithModules
         if (empty($modules)) {
             $this->error('No modules found!');
             $this->info('Run: php artisan make:module <name>');
+
             return null;
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\Stubs;
 
 use Illuminate\Support\Facades\File;
@@ -43,12 +45,12 @@ class StubHelper
     {
         $modulesPath = base_path('modules');
 
-        if (!File::exists($modulesPath)) {
+        if (! File::exists($modulesPath)) {
             return [];
         }
 
         return collect(File::directories($modulesPath))
-            ->map(fn($path) => basename($path))
+            ->map(fn ($path) => basename($path))
             ->sort()
             ->values()
             ->toArray();

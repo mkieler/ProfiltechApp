@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Delivery\External\OpenRouteService\Data;
+
 class ORSJob
 {
     public int $id;
+
     public array $location;
+
     public int $service;
 
     public function __construct(

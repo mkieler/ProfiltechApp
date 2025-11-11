@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Delivery\External\OpenRouteService\Data;
 
 class ORSVehicle
 {
     public int $id;
+
     public string $profile;
+
     public array $start;
+
     public array $end;
 
     public function __construct(

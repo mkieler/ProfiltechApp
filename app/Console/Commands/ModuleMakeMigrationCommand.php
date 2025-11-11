@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Console\Concerns\InteractsWithModules;
@@ -13,6 +15,7 @@ class ModuleMakeMigrationCommand extends Command
     use InteractsWithModules;
 
     protected $signature = 'make:migration {name : The migration name}';
+
     protected $description = 'Create a new migration within a module';
 
     private ?string $selectedModule = null;
@@ -22,7 +25,7 @@ class ModuleMakeMigrationCommand extends Command
         $migrationName = $this->argument('name');
         $moduleName = $this->getModuleName();
 
-        if (!$moduleName) {
+        if (! $moduleName) {
             return self::FAILURE;
         }
 
@@ -35,6 +38,7 @@ class ModuleMakeMigrationCommand extends Command
 
         if (File::exists($migrationPath)) {
             $this->error("Migration {$migrationName} already exists in module {$moduleName}!");
+
             return self::FAILURE;
         }
 
