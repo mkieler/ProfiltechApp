@@ -24,6 +24,9 @@ class ORSClient
             'vehicles' => [
                 $vehicle
             ],
+            'options' => [
+                'objective' => 'transport', // Optimize for fastest time (not shortest distance)
+            ]
         ])->collect('routes.0.steps');
 
         return $steps->map(fn($step) => ORSStep::from($step));

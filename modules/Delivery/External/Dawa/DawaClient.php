@@ -40,14 +40,29 @@ class DawaClient
         int $postalCode,
         bool $fuzzy = false
     ): ?DawaAddressResponse {
+
+        if($address === 'Birkevej3') {
+            $test = null;
+        }
+        $address = self::normalizeAddress($address);
         $data = Http::get("https://api.dataforsyningen.dk/adresser", [
             'q' => $address,
             'postnr' => $postalCode,
             'format' => 'json',
             'struktur' => 'mini',
             'fuzzy' => $fuzzy ? 'true' : 'false'
-        ])->json()[0];
+        ])->json()[0] ?? [];
 
         return empty($data) ? null : DawaAddressResponse::from($data);
+    }
+
+
+    private static function normalizeAddress(string $address): string
+    {
+        $address = strtolower($address);
+        $address = preg_replace('/[^\w\s]/', '', $address); // Remove punctuation
+        $address = preg_replace('/(\d+)/', ' $1', $address); // Ensure space between address and number
+        $address = preg_replace('/\s+/', ' ', $address); // Replace multiple spaces with single space
+        return trim($address);
     }
 }

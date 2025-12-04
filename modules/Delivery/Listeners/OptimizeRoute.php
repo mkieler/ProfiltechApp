@@ -2,7 +2,7 @@
 
 namespace Modules\Delivery\Listeners;
 
-use Modules\Delivery\Events\RouteUpdatedEvent;
+use Modules\Delivery\Events\StopsUpdatedEvent;
 use Modules\Delivery\External\OpenRouteService\Data\ORSVehicle;
 use Modules\Delivery\Services\DeliveryService;
 
@@ -15,7 +15,7 @@ class OptimizeRoute
     /**
      * Handle the event.
      */
-    public function handle(RouteUpdatedEvent $event): void
+    public function handle(StopsUpdatedEvent $event): void
     {
         $this->deliveryService->optimizeStopsOnRoute(
             $event->route, 

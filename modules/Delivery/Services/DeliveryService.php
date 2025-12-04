@@ -2,19 +2,21 @@
 
 namespace Modules\Delivery\Services;
 
+use Modules\Delivery\Data\StoreRouteData;
 use Modules\Delivery\Events\RouteUpdatedEvent;
 use Illuminate\Database\Eloquent\Collection;
 use Modules\Delivery\Enums\DeliveryStatus;
-use Modules\Delivery\External\OpenRouteService\Data\ORSJob;
+use Modules\Delivery\Events\StopsUpdatedEvent;
 use Modules\Delivery\External\OpenRouteService\Data\ORSVehicle;
 use Modules\Delivery\External\OpenRouteService\ORSClient;
 use Modules\Delivery\Models\Route;
+use Modules\Delivery\Models\Stop;
 
 class DeliveryService
 {
-    public function scheduleDelivery(array $details)
+    public function getRoute(int $id): Route
     {
-        // Logic to schedule a delivery
+        return Route::findOrFail($id);
     }
 
     public function getRoutes(int $perPage = 20, bool $withCompleted = false)
@@ -24,6 +26,36 @@ class DeliveryService
         )->paginate($perPage);
     }
 
+    public function create(StoreRouteData $data): Route
+    {
+        return Route::create([
+            'name' => $data->name,
+            'date' => $data->date,
+            'status' => DeliveryStatus::DRAFT,
+        ]);
+    }
+
+    public function update(int $id, StoreRouteData $data): Route
+    {
+        $route = Route::findOrFail($id);
+        $route->update([
+            'name' => $data->name,
+            'date' => $data->date,
+        ]);
+        RouteUpdatedEvent::dispatch($route);
+        return $route;
+    }
+
+    public function deleteRoute(int $id)
+    {
+        $route = Route::findOrFail($id);
+        $route->delete();
+    }
+
+    public function getStopsForRoute(int $routeId): Collection
+    {
+        return Stop::where('route_id', $routeId)->get();
+    }
 
     public function addStopToRoute(int $routeId, int $orderId)
     {
@@ -32,8 +64,18 @@ class DeliveryService
         $route->stops()->create([
             'order_id' => $orderId,
             'sequence' => $lastSequence + 1,
+            'status' => DeliveryStatus::DRAFT,
         ]);
         RouteUpdatedEvent::dispatch($route);
+        StopsUpdatedEvent::dispatch($route);
+    }
+
+    public function removeStopFromRoute(int $routeId, int $stopId)
+    {
+        $stop = Stop::with('route')->where(['route_id' => $routeId, 'id' => $stopId])->firstOrFail();
+        $stop->delete();
+        RouteUpdatedEvent::dispatch($stop->route);
+        StopsUpdatedEvent::dispatch($stop->route);
     }
 
     /**

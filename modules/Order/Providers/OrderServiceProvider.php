@@ -2,6 +2,7 @@
 
 namespace Modules\Order\Providers;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class OrderServiceProvider extends ServiceProvider
@@ -22,7 +23,6 @@ class OrderServiceProvider extends ServiceProvider
         // Load migrations
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
-        // Load routes
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
+        Route::middleware('api')->group(__DIR__ . '/../Routes/api.php');
     }
 }

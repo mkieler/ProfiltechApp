@@ -19,6 +19,8 @@ class Stop extends Model
         return [];
     }
 
+    protected $appends = ['latitude', 'longitude'];
+
     protected static function newFactory()
     {
         return \Modules\Delivery\Database\Factories\StopFactory::new();
@@ -27,6 +29,11 @@ class Stop extends Model
     public function order()
     {
         return $this->belongsTo(Order::class, 'order_id', 'id');
+    }
+
+    public function route()
+    {
+        return $this->belongsTo(Route::class, 'route_id', 'id');
     }
 
     public function getLatitudeAttribute(): ?float

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('routes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('origin');
+            $table->date('date');
             $table->string('status');
             $table->timestamps();
         });

@@ -4,7 +4,7 @@ namespace Modules\Delivery\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddStopToRouteRequest extends FormRequest
+class CreateOrUpdateRouteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,8 @@ class AddStopToRouteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order_id' => ['required', 'integer', 'exists:orders,id'],
+            'name' => 'required|string|max:255',
+            'date' => 'required|date',
         ];
     }
 }

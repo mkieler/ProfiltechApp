@@ -2,19 +2,33 @@
 
 namespace Modules\Order\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Delivery\External\Dawa\DawaClient;
+use Modules\Delivery\Models\Stop;
+use Modules\Shared\Traits\HasSearchScope;
+use Modules\Shared\Traits\HasSortScope;
 use Modules\Wordpress\Models\WoocommerceOrder;
 
-class Order extends Model
+class OrderExtension extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSearchScope, HasSortScope;
 
     protected $fillable = ['wc_order_id', 'latitude', 'longitude'];
 
     protected $hidden = [];
+
+    /**
+     * Columns that can be searched
+     */
+    protected array $searchable = ['order_number', 'customer_name'];
+
+    /**
+     * Columns that can be sorted
+     */
+    protected array $sortable = ['id', 'order_number', 'customer_name', 'created_at', 'updated_at'];
 
     protected function casts(): array
     {
@@ -41,6 +55,11 @@ class Order extends Model
         return $this->wcOrder->shipping;
     }
 
+    public function stop()
+    {
+        return $this->hasOne(Stop::class, 'order_id', 'id');
+    }
+
     public function getBillingAttribute(): ?object
     {
         return $this->wcOrder->billing;
@@ -53,7 +72,7 @@ class Order extends Model
                 if (!$value) {
                     $value = DawaClient::getLongitude(
                         $this->shipping->address_1,
-                        $this->shipping->postcode
+                        (int)$this->shipping->postcode
                     );
                     $this->update(['longitude' => $value]);
                 }
@@ -70,7 +89,7 @@ class Order extends Model
                 if (!$value) {
                     $value = DawaClient::getLatitude(
                         $this->shipping->address_1,
-                        $this->shipping->postcode
+                        (int)$this->shipping->postcode
                     );
                     $this->update(['latitude' => $value]);
                 }
@@ -78,5 +97,33 @@ class Order extends Model
             },
             set: fn ($value) => $this->latitude = $value
         );
+    }
+
+    /**
+     * Scope to filter orders by route status
+     *
+     * @param Builder $query
+     * @param bool|null $value - null: all orders, true: only on route, false: only not on route
+     */
+    public function scopeIsOnRoute(Builder $query, ?bool $value): Builder
+    {
+        return $query->when($value !== null, fn($query) =>
+            $value ? $query->whereHas('stop') : $query->whereDoesntHave('stop')
+        );
+    }
+
+    public function scopeHasStatus(Builder $query, ?array $statuses): Builder
+    {
+        if (empty($statuses)) {
+            return $query;
+        }
+
+        // Get WooCommerce order IDs from wordpress database that match the statuses
+        $wcOrderIds = WoocommerceOrder::whereIn('status', $statuses)
+            ->pluck('id')
+            ->toArray();
+
+        // Then filter orders based on those IDs
+        return $query->whereIn('wc_order_id', $wcOrderIds);
     }
 }

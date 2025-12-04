@@ -2,6 +2,7 @@
 
 namespace Modules\Quotes\Providers;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class QuotesServiceProvider extends ServiceProvider
@@ -22,7 +23,7 @@ class QuotesServiceProvider extends ServiceProvider
         // Load migrations
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
-        // Load routes
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
+        // Load routes as API routes (no prefix)
+        Route::middleware('api')->group(__DIR__ . '/../Routes/api.php');
     }
 }

@@ -20,7 +20,7 @@ class RouteFactory extends Factory
                 'Route ' . fake()->numberBetween(1, 100),
                 fake()->city() . ' Route',
             ]),
-            'origin' => fake()->address(),
+            'date' => fake()->date(),
             'status' => fake()->randomElement([
                 DeliveryStatus::DRAFT->name,
                 DeliveryStatus::PROCESSING->name,
